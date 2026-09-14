@@ -1,0 +1,42 @@
+{
+  "stack_name": "chatwoot-mcp",
+  "service_name": "chatwoot-mcp",
+  "image": "ca/chatwoot-mcp-bridge:1.0",
+  "env": {
+    "BRIDGE_PORT": "8102",
+    "BRIDGE_PREFIX": "/chatwoot",
+    "BRIDGE_TOKEN": "#{BRIDGE_TOKEN}",
+    "CHATWOOT_BASE_URL": "https://magicachat.conexaoazul.com/",
+    "CHATWOOT_API_TOKEN": "#{CHATWOOT_API_TOKEN}",
+    "CHATWOOT_ACCOUNT_ID": "64"
+  },
+  "networks": ["web"],
+  "placement": ["node.hostname==dev1"],
+  "publish": [
+    {
+      "published": 18102,
+      "target": 8102,
+      "mode": "host"
+    }
+  ],
+  "replicas": 1,
+  "restart_policy": { "condition": "any", "delay": "5s" },
+  "labels_traefik": {
+    "traefik.enable": "true",
+    "traefik.http.routers.chatwootmcp.rule": "Host(`mcp-origin.conexaoazul.com`) && PathPrefix(`/chatwoot`)",
+    "traefik.http.routers.chatwootmcp.entrypoints": "websecure",
+    "traefik.http.routers.chatwootmcp.tls": "true",
+    "traefik.http.routers.chatwootmcp.middlewares": "chatwootmcp-strip",
+    "traefik.http.routers.chatwootmcp.priority": "220",
+    "traefik.http.middlewares.chatwootmcp-strip.stripprefix.prefixes": "/chatwoot",
+    "traefik.http.middlewares.chatwootmcp-strip.stripprefix.forceSlash": "true",
+    "traefik.http.services.chatwootmcp.loadbalancer.server.port": "8102",
+    "traefik.http.services.chatwootmcp.loadbalancer.server.scheme": "http"
+  },
+  "endpoint_portal_cf": {
+    "id": "chatwoot",
+    "name": "Chatwoot (Magicachat) — 123 tools",
+    "hostname": "https://mcp-origin.conexaoazul.com/chatwoot/mcp",
+    "auth_type": "unauthenticated"
+  }
+}
