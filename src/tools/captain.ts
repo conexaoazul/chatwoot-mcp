@@ -22,7 +22,9 @@ export const register: RegisterFn = (server, client) => {
     },
     async ({ account_id }) => {
       const result = await client.get(`${base(account_id)}/preferences`);
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 
@@ -37,7 +39,9 @@ export const register: RegisterFn = (server, client) => {
     },
     async ({ account_id }) => {
       const result = await client.get(`${base(account_id)}/assistants`);
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 
@@ -52,7 +56,9 @@ export const register: RegisterFn = (server, client) => {
     },
     async ({ account_id, id }) => {
       const result = await client.get(`${base(account_id)}/assistants/${id}`);
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 
@@ -66,9 +72,18 @@ export const register: RegisterFn = (server, client) => {
         account_id: accountId,
         id: assistantId,
         name: z.string().optional().describe("Assistant display/name"),
-        description: z.string().optional().describe("Assistant role description"),
-        product_name: z.string().optional().describe("Product scope used by Captain prompts"),
-        instructions: z.string().optional().describe("Legacy/custom Captain instructions"),
+        description: z
+          .string()
+          .optional()
+          .describe("Assistant role description"),
+        product_name: z
+          .string()
+          .optional()
+          .describe("Product scope used by Captain prompts"),
+        instructions: z
+          .string()
+          .optional()
+          .describe("Legacy/custom Captain instructions"),
         temperature: z.number().min(0).max(2).optional(),
         welcome_message: z.string().optional(),
         handoff_message: z.string().optional(),
@@ -100,9 +115,12 @@ export const register: RegisterFn = (server, client) => {
       if (product_name !== undefined) config.product_name = product_name;
       if (instructions !== undefined) config.instructions = instructions;
       if (temperature !== undefined) config.temperature = temperature;
-      if (welcome_message !== undefined) config.welcome_message = welcome_message;
-      if (handoff_message !== undefined) config.handoff_message = handoff_message;
-      if (resolution_message !== undefined) config.resolution_message = resolution_message;
+      if (welcome_message !== undefined)
+        config.welcome_message = welcome_message;
+      if (handoff_message !== undefined)
+        config.handoff_message = handoff_message;
+      if (resolution_message !== undefined)
+        config.resolution_message = resolution_message;
       if (Object.keys(config).length > 0) assistant.config = config;
       if (response_guidelines !== undefined) {
         assistant.response_guidelines = response_guidelines;
@@ -113,7 +131,9 @@ export const register: RegisterFn = (server, client) => {
         `${base(account_id)}/assistants/${id}`,
         { assistant },
       );
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 
@@ -130,7 +150,9 @@ export const register: RegisterFn = (server, client) => {
       const result = await client.get(
         `${base(account_id)}/assistants/${assistant_id}/inboxes`,
       );
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 
@@ -138,13 +160,16 @@ export const register: RegisterFn = (server, client) => {
     "captain_assistant_tools_list",
     {
       title: "List Captain Assistant Tools",
-      description: "List built-in and custom tools available to Captain assistants",
+      description:
+        "List built-in and custom tools available to Captain assistants",
       inputSchema: { account_id: accountId },
       annotations: { readOnlyHint: true },
     },
     async ({ account_id }) => {
       const result = await client.get(`${base(account_id)}/assistants/tools`);
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 
@@ -161,7 +186,9 @@ export const register: RegisterFn = (server, client) => {
       const result = await client.get(
         `${base(account_id)}/assistants/${assistant_id}/scenarios`,
       );
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 
@@ -181,7 +208,9 @@ export const register: RegisterFn = (server, client) => {
       const result = await client.get(
         `${base(account_id)}/assistants/${assistant_id}/scenarios/${id}`,
       );
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 
@@ -208,7 +237,9 @@ export const register: RegisterFn = (server, client) => {
         `${base(account_id)}/assistants/${assistant_id}/scenarios/${id}`,
         { scenario },
       );
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 
@@ -223,7 +254,9 @@ export const register: RegisterFn = (server, client) => {
     },
     async ({ account_id }) => {
       const result = await client.get(`${base(account_id)}/copilot_threads`);
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 
@@ -242,7 +275,11 @@ export const register: RegisterFn = (server, client) => {
       const result = await client.get(
         `${base(account_id)}/copilot_threads/${copilot_thread_id}/copilot_messages`,
       );
-      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
     },
   );
 };
+
+[executed on device: azul2 (76f18829-c903-4d56-b926-2edc669717f9)]
