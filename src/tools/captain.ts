@@ -107,30 +107,48 @@ export const register: RegisterFn = (server, client) => {
       response_guidelines,
       guardrails,
     }) => {
+      const path = `${base(account_id)}/assistants/${id}`;
       const assistant: Record<string, unknown> = {};
-      const config: Record<string, unknown> = {};
+
+      const hasConfigUpdates = [
+        product_name,
+        instructions,
+        temperature,
+        welcome_message,
+        handoff_message,
+        resolution_message,
+      ].some((value) => value !== undefined);
 
       if (name !== undefined) assistant.name = name;
       if (description !== undefined) assistant.description = description;
-      if (product_name !== undefined) config.product_name = product_name;
-      if (instructions !== undefined) config.instructions = instructions;
-      if (temperature !== undefined) config.temperature = temperature;
-      if (welcome_message !== undefined)
-        config.welcome_message = welcome_message;
-      if (handoff_message !== undefined)
-        config.handoff_message = handoff_message;
-      if (resolution_message !== undefined)
-        config.resolution_message = resolution_message;
-      if (Object.keys(config).length > 0) assistant.config = config;
+
+      if (hasConfigUpdates) {
+        const current = await client.get<Record<string, unknown>>(path);
+        const currentConfig =
+          current.config &&
+          typeof current.config === "object" &&
+          !Array.isArray(current.config)
+            ? { ...(current.config as Record<string, unknown>) }
+            : {};
+
+        if (product_name !== undefined) currentConfig.product_name = product_name;
+        if (instructions !== undefined) currentConfig.instructions = instructions;
+        if (temperature !== undefined) currentConfig.temperature = temperature;
+        if (welcome_message !== undefined)
+          currentConfig.welcome_message = welcome_message;
+        if (handoff_message !== undefined)
+          currentConfig.handoff_message = handoff_message;
+        if (resolution_message !== undefined)
+          currentConfig.resolution_message = resolution_message;
+
+        assistant.config = currentConfig;
+      }
       if (response_guidelines !== undefined) {
         assistant.response_guidelines = response_guidelines;
       }
       if (guardrails !== undefined) assistant.guardrails = guardrails;
 
-      const result = await client.patch(
-        `${base(account_id)}/assistants/${id}`,
-        { assistant },
-      );
+      const result = await client.patch(path, { assistant });
       return {
         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
       };
