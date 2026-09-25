@@ -74,7 +74,8 @@ describe("Server", () => {
     const server = createServer(client);
 
     // biome-ignore lint/suspicious/noExplicitAny: accessing internal properties for testing
-    const tool = (server as any)._registeredTools.captain_assistants_update_behavior;
+    const tool = (server as any)._registeredTools
+      .captain_assistants_update_behavior;
     await tool.handler({
       account_id: 64,
       id: 1,
@@ -94,5 +95,4 @@ describe("Server", () => {
       },
     });
   });
-
 });
