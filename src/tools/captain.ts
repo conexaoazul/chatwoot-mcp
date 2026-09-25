@@ -281,5 +281,3 @@ export const register: RegisterFn = (server, client) => {
     },
   );
 };
-
-[executed on device: azul2 (76f18829-c903-4d56-b926-2edc669717f9)]
