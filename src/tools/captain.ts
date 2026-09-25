@@ -131,8 +131,10 @@ export const register: RegisterFn = (server, client) => {
             ? { ...(current.config as Record<string, unknown>) }
             : {};
 
-        if (product_name !== undefined) currentConfig.product_name = product_name;
-        if (instructions !== undefined) currentConfig.instructions = instructions;
+        if (product_name !== undefined)
+          currentConfig.product_name = product_name;
+        if (instructions !== undefined)
+          currentConfig.instructions = instructions;
         if (temperature !== undefined) currentConfig.temperature = temperature;
         if (welcome_message !== undefined)
           currentConfig.welcome_message = welcome_message;
