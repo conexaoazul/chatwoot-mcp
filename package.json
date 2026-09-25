@@ -1,10 +1,10 @@
 {
   "name": "@fazer-ai/mcp-chatwoot",
-  "version": "0.0.0",
-  "description": "MCP server for the Chatwoot API (fazer.ai fork) — provides tools for managing conversations, contacts, inboxes, teams, kanban boards, and more.",
+  "version": "1.1.0-ca.1",
+  "description": "Conexão Azul fork of the Chatwoot MCP server, including Captain/Copilot management tools.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fazer-ai/mcp-chatwoot"
+    "url": "https://github.com/conexaoazul/chatwoot-mcp"
   },
   "license": "MIT",
   "publishConfig": {
