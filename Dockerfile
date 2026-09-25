@@ -21,9 +21,7 @@ RUN chmod 0755 /opt/chatwoot-mcp/index.js
 
 ENV BRIDGE_PORT=8102 \
     BRIDGE_PREFIX=/chatwoot \
-    BRIDGE_TOKEN="" \
     CHATWOOT_BASE_URL="" \
-    CHATWOOT_API_TOKEN="" \
     CHATWOOT_ACCOUNT_ID="64"
 
 EXPOSE 8102
