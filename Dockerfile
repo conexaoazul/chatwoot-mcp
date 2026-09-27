@@ -18,7 +18,8 @@ RUN npm install -g --silent supergateway@4.0.0 \
     && npm cache clean --force
 
 COPY --from=build /src/dist/index.js /usr/local/bin/mcp-chatwoot
-RUN chmod 0755 /usr/local/bin/mcp-chatwoot
+COPY docker-entrypoint.sh /usr/local/bin/chatwoot-mcp-entrypoint
+RUN chmod 0755 /usr/local/bin/mcp-chatwoot /usr/local/bin/chatwoot-mcp-entrypoint
 
 ENV BRIDGE_PORT=8102 \
     BRIDGE_PREFIX=/chatwoot \
@@ -29,4 +30,4 @@ ENV BRIDGE_PORT=8102 \
 
 EXPOSE 8102
 
-CMD ["sh", "-c", "set -eu; BRIDGE_TOKEN=\"\${BRIDGE_TOKEN:-}\"; CHATWOOT_API_TOKEN=\"\${CHATWOOT_API_TOKEN:-}\"; if [ -n \"$BRIDGE_TOKEN_FILE\" ]; then BRIDGE_TOKEN=\"$(cat \"$BRIDGE_TOKEN_FILE\")\"; fi; if [ -n \"$CHATWOOT_API_TOKEN_FILE\" ]; then CHATWOOT_API_TOKEN=\"$(cat \"$CHATWOOT_API_TOKEN_FILE\")\"; fi; export BRIDGE_TOKEN CHATWOOT_API_TOKEN; exec supergateway --stdio \"mcp-chatwoot\" --outputTransport streamableHttp --port $BRIDGE_PORT --streamableHttpPath $BRIDGE_PREFIX/mcp --healthEndpoint $BRIDGE_PREFIX/health --header \"Authorization: Bearer $BRIDGE_TOKEN\""]
+ENTRYPOINT ["/usr/local/bin/chatwoot-mcp-entrypoint"]
