@@ -1,4 +1,4 @@
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import { ChatwootClient } from "@/client.ts";
 import { createServer } from "@/server.ts";
 
@@ -16,7 +16,5 @@ if (!apiToken) {
 }
 
 const client = new ChatwootClient(baseUrl, apiToken);
-const server = createServer(client);
-const transport = new StdioServerTransport();
 
-await server.connect(transport);
+serveStdio(() => createServer(client));

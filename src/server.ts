@@ -1,4 +1,4 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer } from "@modelcontextprotocol/server";
 import type { ChatwootClient } from "@/client.ts";
 import config from "@/config.ts";
 import { registerAllTools } from "@/tools/index.ts";
