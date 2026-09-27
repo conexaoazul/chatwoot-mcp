@@ -1,12 +1,24 @@
-# Chatwoot MCP Bridge — expõe o MCP stdio @fazer-ai/mcp-chatwoot como streamableHttp
-# Uso: docker build -t ca/chatwoot-mcp-bridge:1.1-proto2026 .
-# Padrão da org: replica ca/portainer-mcp-bridge (supergateway + auth header)
+# Chatwoot MCP Bridge — source-built MCP v2 + Supergateway 4
+# Supports MCP 2026-07-28 and legacy clients.
+
+FROM oven/bun:1.2.23 AS build
+
+WORKDIR /src
+ENV HUSKY=0
+
+COPY package.json bun.lock bunfig.toml tsconfig.json ./
+COPY src ./src
+
+RUN bun install --frozen-lockfile
+RUN bun run build
 
 FROM node:22-alpine
 
-# supergateway 4 adds MCP 2026-07-28 while keeping legacy compatibility.
-RUN npm install -g --silent supergateway@4.0.0 @fazer-ai/mcp-chatwoot@1.1.0 \
+RUN npm install -g --silent supergateway@4.0.0 \
     && npm cache clean --force
+
+COPY --from=build /src/dist/index.js /usr/local/bin/mcp-chatwoot
+RUN chmod 0755 /usr/local/bin/mcp-chatwoot
 
 ENV BRIDGE_PORT=8102 \
     BRIDGE_PREFIX=/chatwoot \
@@ -17,5 +29,4 @@ ENV BRIDGE_PORT=8102 \
 
 EXPOSE 8102
 
-# Tokens may be supplied via Docker Secrets using *_FILE. Values never need to live in the Swarm service spec.
-CMD ["sh", "-c", "set -eu; BRIDGE_TOKEN=\"${BRIDGE_TOKEN:-}\"; CHATWOOT_API_TOKEN=\"${CHATWOOT_API_TOKEN:-}\"; if [ -n \"$BRIDGE_TOKEN_FILE\" ]; then BRIDGE_TOKEN=\"$(cat \"$BRIDGE_TOKEN_FILE\")\"; fi; if [ -n \"$CHATWOOT_API_TOKEN_FILE\" ]; then CHATWOOT_API_TOKEN=\"$(cat \"$CHATWOOT_API_TOKEN_FILE\")\"; fi; export BRIDGE_TOKEN CHATWOOT_API_TOKEN; exec supergateway --stdio \"mcp-chatwoot\" --outputTransport streamableHttp --port $BRIDGE_PORT --streamableHttpPath $BRIDGE_PREFIX/mcp --healthEndpoint $BRIDGE_PREFIX/health --header \"Authorization: Bearer $BRIDGE_TOKEN\""]
+CMD ["sh", "-c", "set -eu; BRIDGE_TOKEN=\"\${BRIDGE_TOKEN:-}\"; CHATWOOT_API_TOKEN=\"\${CHATWOOT_API_TOKEN:-}\"; if [ -n \"$BRIDGE_TOKEN_FILE\" ]; then BRIDGE_TOKEN=\"$(cat \"$BRIDGE_TOKEN_FILE\")\"; fi; if [ -n \"$CHATWOOT_API_TOKEN_FILE\" ]; then CHATWOOT_API_TOKEN=\"$(cat \"$CHATWOOT_API_TOKEN_FILE\")\"; fi; export BRIDGE_TOKEN CHATWOOT_API_TOKEN; exec supergateway --stdio \"mcp-chatwoot\" --outputTransport streamableHttp --port $BRIDGE_PORT --streamableHttpPath $BRIDGE_PREFIX/mcp --healthEndpoint $BRIDGE_PREFIX/health --header \"Authorization: Bearer $BRIDGE_TOKEN\""]
