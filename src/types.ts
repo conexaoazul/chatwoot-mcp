@@ -5,7 +5,7 @@
  * for internal type-safety only — tool responses are returned as raw JSON text.
  */
 
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { McpServer } from "@modelcontextprotocol/server";
 import type { ChatwootClient } from "@/client.ts";
 
 /** Signature every tool module must export. */
