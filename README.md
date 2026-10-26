@@ -3,11 +3,11 @@
 [![npm version](https://img.shields.io/npm/v/@fazer-ai/mcp-chatwoot.svg)](https://www.npmjs.com/package/@fazer-ai/mcp-chatwoot)
 [![npm downloads](https://img.shields.io/npm/dm/@fazer-ai/mcp-chatwoot.svg)](https://www.npmjs.com/package/@fazer-ai/mcp-chatwoot)
 
-A [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) server that exposes the full [Chatwoot](https://www.chatwoot.com/) API — including [fazer.ai](https://fazer.ai) exclusive features — as **129 tools** for use with AI assistants like Claude, VS Code Copilot, and others.
+A [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) server that exposes the full [Chatwoot](https://www.chatwoot.com/) API — including [fazer.ai](https://fazer.ai) exclusive features — as **140 tools** for use with AI assistants like Claude, VS Code Copilot, and others.
 
 ## Features
 
-- **129 tools** covering all Chatwoot API endpoints
+- **140 tools** covering all Chatwoot API endpoints
 - Account, Agents, Contacts, Conversations, Messages, Inboxes, Teams, and more
 - Reports (v1 & v2), Help Center, Automation Rules, Custom Attributes, Custom Filters
 - **[fazer.ai] exclusive**: Kanban Boards, Kanban Steps, Kanban Tasks, Kanban Audit Events, Kanban Preferences, Scheduled Messages
@@ -85,7 +85,7 @@ Add to your `.vscode/mcp.json`:
 }
 ```
 
-## Available Tools (129)
+## Available Tools (140)
 
 ### Account (2)
 
@@ -166,6 +166,12 @@ Add to your `.vscode/mcp.json`:
 ### Webhooks (4)
 
 `webhooks_list`, `webhooks_create`, `webhooks_update`, `webhooks_delete`
+
+### Conexão Azul Kanban fork-native (17) — GET/read-only
+
+`kanban_funnels_list`, `kanban_funnels_get`, `kanban_funnels_stage_stats`, `kanban_items_list`, `kanban_items_get`, `kanban_items_by_funnel`, `kanban_items_reports`, `kanban_items_search`, `kanban_items_filter`, `kanban_items_assigned_agents`, `kanban_items_notes_list`, `kanban_items_checklist_list`, `kanban_items_time_report`, `kanban_items_stage_time_breakdown`, `kanban_items_checklist_search`, `kanban_items_checklist_progress_by_agent`, `kanban_items_counts`
+
+These tools use `/api/v1/accounts/:account_id/funnels` and `/kanban_items` from the Conexão Azul fork; legacy fazer.ai `/kanban/boards`, `/kanban/steps`, `/kanban/tasks` tools are retained. Deploy/runtime support, entitlements, and permission scopes must be verified before enabling the new route family. The existing `GET /kanban_config` is deliberately excluded because its controller can persist a configuration during reads.
 
 ### Kanban Boards (9) — [fazer.ai]
 
