@@ -67,13 +67,19 @@ describe("Kanban fork-native F0 MCP tools", () => {
       page: 2,
     });
     expect(calls[2]?.path).toBe("/api/v1/accounts/64/kanban_items/551");
-    expect(calls.every((call) => !call.path.includes("/kanban/boards"))).toBe(true);
+    expect(calls.every((call) => !call.path.includes("/kanban/boards"))).toBe(
+      true,
+    );
   });
 
   test("does not expose side-effecting kanban config reads or write tools", () => {
     const { tools } = makeHarness();
     const names = [...tools.keys()];
-    expect(names.every((name) => /^kanban_(funnels|items)_/.test(name))).toBe(true);
-    expect(names.some((name) => /create|delete|update|move|bulk|config/.test(name))).toBe(false);
+    expect(names.every((name) => /^kanban_(funnels|items)_/.test(name))).toBe(
+      true,
+    );
+    expect(
+      names.some((name) => /create|delete|update|move|bulk|config/.test(name)),
+    ).toBe(false);
   });
 });
