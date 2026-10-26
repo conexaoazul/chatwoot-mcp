@@ -18,6 +18,7 @@ import { register as registerInboxes } from "./inboxes.ts";
 import { register as registerIntegrations } from "./integrations.ts";
 import { register as registerKanbanAuditEvents } from "./kanban-audit-events.ts";
 import { register as registerKanbanBoards } from "./kanban-boards.ts";
+import { register as registerKanbanFork } from "./kanban-fork.ts";
 import { register as registerKanbanSteps } from "./kanban-steps.ts";
 import { register as registerKanbanTasks } from "./kanban-tasks.ts";
 import { register as registerMessages } from "./messages.ts";
@@ -45,6 +46,7 @@ const registrations = [
   registerIntegrations,
   registerKanbanAuditEvents,
   registerKanbanBoards,
+  registerKanbanFork,
   registerKanbanSteps,
   registerKanbanTasks,
   registerMessages,
