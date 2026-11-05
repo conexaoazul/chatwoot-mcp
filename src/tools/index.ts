@@ -24,6 +24,7 @@ import { register as registerMessages } from "./messages.ts";
 import { register as registerProfile } from "./profile.ts";
 import { register as registerReports } from "./reports.ts";
 import { register as registerScheduledMessages } from "./scheduled-messages.ts";
+import { register as registerStacklabKanban } from "./stacklab-kanban.ts";
 import { register as registerTeams } from "./teams.ts";
 import { register as registerWebhooks } from "./webhooks.ts";
 
@@ -51,6 +52,7 @@ const registrations = [
   registerProfile,
   registerReports,
   registerScheduledMessages,
+  registerStacklabKanban,
   registerTeams,
   registerWebhooks,
 ];
