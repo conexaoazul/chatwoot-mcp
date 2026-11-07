@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { RegisterFn } from "@/types.ts";
+import { redactSecrets } from "@/tools/redact-secrets.ts";
 
 const accountId = z.number().describe("The account ID");
 
@@ -17,7 +18,7 @@ export const register: RegisterFn = (server, client) => {
     async ({ account_id }) => {
       const result = await client.get(base(account_id));
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -37,7 +38,7 @@ export const register: RegisterFn = (server, client) => {
     async ({ account_id, ...body }) => {
       const result = await client.post(base(account_id), body);
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -56,7 +57,7 @@ export const register: RegisterFn = (server, client) => {
     async ({ account_id, id }) => {
       const result = await client.get(`${base(account_id)}/${id}`);
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -78,7 +79,7 @@ export const register: RegisterFn = (server, client) => {
     async ({ account_id, id, ...body }) => {
       const result = await client.patch(`${base(account_id)}/${id}`, body);
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
