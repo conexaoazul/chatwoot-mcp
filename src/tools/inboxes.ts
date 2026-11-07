@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { RegisterFn } from "@/types.ts";
+import { redactSecrets } from "@/tools/redact-secrets.ts";
 
 const accountId = z.number().describe("The account ID");
 
@@ -74,6 +75,29 @@ export const register: RegisterFn = (server, client) => {
         account_id: accountId,
         id: z.number().describe("Inbox ID"),
         name: z.string().optional().describe("Inbox name"),
+        working_hours_enabled: z
+          .boolean()
+          .optional()
+          .describe("Use inbox business hours for SLA calculations"),
+        timezone: z
+          .string()
+          .min(1)
+          .optional()
+          .describe("IANA timezone, e.g. America/Sao_Paulo"),
+        working_hours: z
+          .array(
+            z.object({
+              day_of_week: z.number().int().min(0).max(6),
+              closed_all_day: z.boolean().optional(),
+              open_all_day: z.boolean().optional(),
+              open_hour: z.number().int().min(0).max(23).nullable().optional(),
+              open_minutes: z.number().int().min(0).max(59).nullable().optional(),
+              close_hour: z.number().int().min(0).max(23).nullable().optional(),
+              close_minutes: z.number().int().min(0).max(59).nullable().optional(),
+            }),
+          )
+          .optional()
+          .describe("Explicit business-hour schedule (0=Sunday, 6=Saturday)"),
         enable_auto_assignment: z
           .boolean()
           .optional()
@@ -107,7 +131,7 @@ export const register: RegisterFn = (server, client) => {
     async ({ account_id, id }) => {
       const result = await client.get(`${base(account_id)}/${id}/agent_bot`);
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
