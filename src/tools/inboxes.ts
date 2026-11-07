@@ -131,7 +131,12 @@ export const register: RegisterFn = (server, client) => {
     async ({ account_id, id }) => {
       const result = await client.get(`${base(account_id)}/${id}/agent_bot`);
       return {
-        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(redactSecrets(result), null, 2),
+          },
+        ],
       };
     },
   );
