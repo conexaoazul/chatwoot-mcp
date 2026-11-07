@@ -18,7 +18,7 @@ export const register: RegisterFn = (server, client) => {
     async ({ account_id }) => {
       const result = await client.get(base(account_id));
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -37,7 +37,7 @@ export const register: RegisterFn = (server, client) => {
     async ({ account_id, id }) => {
       const result = await client.get(`${base(account_id)}/${id}/`);
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -61,7 +61,7 @@ export const register: RegisterFn = (server, client) => {
     async ({ account_id, ...body }) => {
       const result = await client.post(`${base(account_id)}/`, body);
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -112,7 +112,7 @@ export const register: RegisterFn = (server, client) => {
     async ({ account_id, id, ...body }) => {
       const result = await client.patch(`${base(account_id)}/${id}`, body);
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -161,7 +161,7 @@ export const register: RegisterFn = (server, client) => {
         { agent_bot },
       );
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -182,7 +182,7 @@ export const register: RegisterFn = (server, client) => {
         `/api/v1/accounts/${account_id}/inbox_members/${inbox_id}`,
       );
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -204,7 +204,7 @@ export const register: RegisterFn = (server, client) => {
         { inbox_id, user_ids },
       );
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -230,7 +230,7 @@ export const register: RegisterFn = (server, client) => {
         { inbox_id, user_ids },
       );
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
@@ -252,7 +252,7 @@ export const register: RegisterFn = (server, client) => {
         `/api/v1/accounts/${account_id}/inbox_members`,
       );
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: "text", text: JSON.stringify(redactSecrets(result), null, 2) }],
       };
     },
   );
